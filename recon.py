@@ -22,10 +22,18 @@ class Recon:
         for SSID in SSIDs:
             logging.info("Found SSID: %s MAC: %s"%SSID)
 
+    def __pprint_devices(self,AP,devices):
+        for device in devices:
+            logging.info("Found device MAC: %s communicating with AP: %s"%(device,AP))
+
     def run_recon(self):
-        self.__run_capture(30)
-        packets=self.capture.search("dot11_beacons")
-        SSIDs=self.traffic.get_SSIDs(packets)
+        self.__run_capture(60)
+        beacons=self.capture.search("dot11_beacons")
+        data=self.capture.search("dot11_data")
+        SSIDs=self.traffic.get_SSIDs(beacons)
+        for (ssid,addr) in SSIDs:
+            devices=self.traffic.get_connected_devices(data,addr)
+            self.__pprint_devices(addr,devices)
         self.__pprint_SSIDs(SSIDs)
         logging.debug("Recon Done.")
 

@@ -27,6 +27,17 @@ class Traffic:
                 packet=packet.payload
         return APs
 
+    def get_connected_devices(self,packets,APmac):
+        devices=list()
+        for packet in packets:
+            if packet.haslayer(Dot11):
+                addrs=[packet.addr1,packet.addr2,packet.addr3,packet.addr4]
+                if APmac in addrs:
+                    for addr in addrs:
+                        if addr not in devices and addr!=APmac and addr!="ff:ff:ff:ff:ff:ff":
+                            devices.append(addr)
+        return devices
+
 def main():
     pass
 
