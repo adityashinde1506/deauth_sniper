@@ -31,11 +31,19 @@ class Capture:
         self.queue=Queue()
         self.sniffer=Sniffer(self.queue)
         self.packet_types={
-            "dot11_beacons":self.__dot11_beacons
+            "all":lambda x: True,
+            "dot11_beacons":self.__dot11_beacons,
+            "dot11_data":self.__dot11_data
             }
 
     def __dot11_beacons(self,packet):
         if packet.haslayer(Dot11) and packet.getlayer(Dot11).type==0 and packet.getlayer(Dot11).subtype==8:
+            return True
+        else:
+            return False
+
+    def __dot11_data(self,packet):
+        if packet.haslayer(Dot11) and packet.getlayer(Dot11).type==2:
             return True
         else:
             return False
@@ -54,9 +62,10 @@ class Capture:
 
 def main():
     capture=Capture()
-    capture.start_capture(15)
+    capture.start_capture(50)
     capture.finish_capture()
-    capture.search("dot11_beacons")
+    for packet in capture.search("all"):
+        print(packet.summary())
 
 if __name__=="__main__":
     main()
