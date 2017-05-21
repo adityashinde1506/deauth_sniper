@@ -5,7 +5,7 @@ import time
 class Sniffer(Process):
 
     def __init__(self,queue):
-        super().__init__()
+        super(Sniffer,self).__init__()
         self.timeout=20
         self.out=queue
         self.FINISHED=Event()

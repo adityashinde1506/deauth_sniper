@@ -1,5 +1,5 @@
 #!/bin/bash
 
-iw phy phy0 interface add mon0 type monitor
-ifconfig mon0 up
+iw dev wlp2s0 interface add mon0 type monitor > /dev/null 2>&1
+#ifconfig mon0 up
 echo "Interface mon0 set up"

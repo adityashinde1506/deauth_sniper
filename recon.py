@@ -27,7 +27,7 @@ class Recon:
             logging.info("Found device MAC: %s communicating with AP: %s"%(device,AP))
 
     def run_recon(self):
-        self.__run_capture(60)
+        self.__run_capture(240)
         beacons=self.capture.search("dot11_beacons")
         data=self.capture.search("dot11_data")
         SSIDs=self.traffic.get_SSIDs(beacons)
